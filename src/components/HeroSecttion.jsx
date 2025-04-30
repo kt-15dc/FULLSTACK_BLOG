@@ -2,9 +2,9 @@ import React from "react";
 
 const HeroSection = () => {
     return (
-        <main className="container py-8 lg:py-16 mx-auto sm:px-20 px-5 max-w-7xl">
+        <main className="container py-8 lg:py-16 mx-auto sm:px-[120px] px-5 max-w-7xl">
         <div className="flex flex-col lg:flex-row items-center mt-10">
-          <div className="lg:w-1/3 mb-8 lg:mb-0 lg:pr-8">
+          <div className="lg:w-1/3 mb-8 lg:mb-0 lg:pr-8 text-right">
             <h1 className="text-4xl lg:text-5xl font-semibold mb-4">
               Stay <br className="hidden lg:block" />
               Informed, <br />
