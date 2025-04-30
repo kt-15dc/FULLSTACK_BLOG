@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import BlogCard from "./BlogCard";
 import {
   Select,
   SelectContent,
@@ -10,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
+import { blogPosts } from "@/data/blogPosts";
 
 const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
@@ -29,11 +31,15 @@ export default function ArticleSection() {
             <Button
               key={cat}
               variant={activeCategory === cat ? "secondary" : "ghost"}
-              className={`rounded-xl px-6 py-2 font-medium ${
-                activeCategory === cat
-                  ? "bg-[#d7d3cd] text-black"
-                  : "text-muted-foreground"
-              }`}
+              className={`rounded-xl px-6 py-2 font-medium cursor-pointer transition-colors duration-150 ease-in-out
+    ${
+      activeCategory === cat
+        ? "bg-[#d7d3cd] text-black"
+        : "text-muted-foreground hover:bg-[#e6e3df] hover:text-black"
+    }
+    active:bg-[#ccc8c2] active:text-black
+    focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-[#d7d3cd]"
+  `}
               onClick={() => setActiveCategory(cat)}
             >
               {cat}
@@ -45,7 +51,8 @@ export default function ArticleSection() {
         <div className="hidden md:block relative w-full max-w-sm">
           <Input
             placeholder="Search"
-            className="pl-4 pr-10 py-6 rounded-xl text-base transition-colors bg-white focus:bg-white/90 hover:bg-white/90 backdrop-blur-md border border-gray-200 focus:border-gray-300 hover:border-gray-300 focus:ring-0"
+            className="pl-4 pr-10 py-6 rounded-xl text-base transition-all duration-150 bg-white focus:bg-white/90 hover:bg-white/90 backdrop-blur-md
+  border border-gray-200 hover:border-[#d7d3cd] focus:border-[#d7d3cd] focus:ring-1 focus:ring-[#b3aea7] focus:outline-none"
           />
 
           <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-black" />
@@ -91,6 +98,20 @@ export default function ArticleSection() {
             </Select>
           </div>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-12 lg:gap-x-5 mt-12">
+        {blogPosts.map((post) => (
+          <BlogCard
+            key={post.id}
+            image={post.image}
+            category={post.category}
+            title={post.title}
+            description={post.description}
+            author={post.author}
+            date={post.date}
+          />
+        ))}
       </div>
     </section>
   );
