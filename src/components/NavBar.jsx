@@ -34,23 +34,6 @@ const NavBar = () => {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="sm:hidden w-screen left-0 mt-2 space-y-4 py-6 px-6 bg-white/90 backdrop-blur-md border border-gray-200 shadow-md rounded-none text-center">
-              {/* <DropdownMenuLabel className="text-lg">Menu</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <div className="space-y-2">
-                <DropdownMenuItem asChild>
-                  <a href="/" className="block w-full py-2 text-base text-gray-700 hover:text-black hover:bg-[#e6e3df] rounded-md transition-colors">Home</a>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <a href="/about" className="block w-full py-2 text-base text-gray-700 hover:text-black hover:bg-[#e6e3df] rounded-md transition-colors">About</a>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <a href="/services" className="block w-full py-2 text-base text-gray-700 hover:text-black hover:bg-[#e6e3df] rounded-md transition-colors">Services</a>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <a href="/contact" className="block w-full py-2 text-base text-gray-700 hover:text-black hover:bg-[#e6e3df] rounded-md transition-colors">Contact</a>
-                </DropdownMenuItem>
-              </div>
-              <DropdownMenuSeparator /> */}
               <div className="space-x-4 pt-2">
               <OutlineButton>Log in</OutlineButton>
               <PrimaryButton>Sign up</PrimaryButton>
