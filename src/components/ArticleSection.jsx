@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { debounce } from "lodash";
 
 const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
@@ -23,20 +25,25 @@ export default function ArticleSection() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const fetchPosts = async () => {
     setIsLoading(true);
     try {
-      const categoryParams = activeCategory === "Highlight" ? "" : activeCategory;
+      const categoryParams =
+        activeCategory === "Highlight" ? "" : activeCategory;
 
-      const response = await axios.get("https://blog-post-project-api.vercel.app/posts", {
-        params: {
-          page,
-          limit,
-          category: categoryParams,
-          keyword: searchKeyword.trim() === "" ? undefined : searchKeyword,
-        },
-      });
+      const response = await axios.get(
+        "https://blog-post-project-api.vercel.app/posts",
+        {
+          params: {
+            page,
+            limit,
+            category: categoryParams,
+            keyword: searchKeyword.trim() === "" ? undefined : searchKeyword,
+          },
+        }
+      );
 
       setPosts((prevPosts) => [...prevPosts, ...response.data.posts]);
       setHasMore(response.data.currentPage < response.data.totalPages);
@@ -46,6 +53,28 @@ export default function ArticleSection() {
       setIsLoading(false);
     }
   };
+
+  const fetchSearchSuggestions = debounce(async (keyword) => {
+    if (!keyword.trim()) {
+      setSearchResults([]);
+      return;
+    }
+    try {
+      const res = await axios.get(
+        "https://blog-post-project-api.vercel.app/posts",
+        {
+          params: { keyword },
+        }
+      );
+      setSearchResults(res.data.posts || []);
+    } catch (err) {
+      console.error("Search suggestion error:", err);
+    }
+  }, 300);
+
+  useEffect(() => {
+    fetchSearchSuggestions(searchKeyword);
+  }, [searchKeyword]);
 
   useEffect(() => {
     setPosts([]);
@@ -102,9 +131,24 @@ export default function ArticleSection() {
             onChange={(e) => setSearchKeyword(e.target.value)}
             placeholder="Search"
             className="pl-4 pr-10 py-6 rounded-xl text-base transition-all duration-150 bg-white focus:bg-white/90 hover:bg-white/90 backdrop-blur-md
-              border border-gray-200 hover:border-[#d7d3cd] focus:border-[#d7d3cd] focus:ring-1 focus:ring-[#b3aea7] focus:outline-none"
+      border border-gray-200 hover:border-[#d7d3cd] focus:border-[#d7d3cd] focus:ring-1 focus:ring-[#b3aea7] focus:outline-none"
           />
           <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-black" />
+
+          {searchKeyword && searchResults.length > 0 && (
+            <div className="absolute z-50 top-full mt-1 left-0 w-full bg-white border border-gray-200 shadow-lg rounded-xl max-h-72 overflow-y-auto">
+              {searchResults.map((result) => (
+                <Link
+                  key={result.id}
+                  to={`/post/${result.id}`}
+                  onClick={() => setSearchKeyword("")}
+                  className="block px-4 py-3 hover:bg-[#f3f2f0] text-sm text-black cursor-pointer transition"
+                >
+                  {result.title}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="md:hidden w-full">
@@ -139,10 +183,10 @@ export default function ArticleSection() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-12 lg:gap-x-5 mt-12">
-        {posts.map((post) => (
+        {posts.map((post, index) => (
           <BlogCard
-            key={post.id}
-            image={post.image}
+            key={`${post.id}-${index}`}
+            image={post.image} // Pass the image URL directly
             category={post.category}
             title={post.title}
             description={post.description}
@@ -152,6 +196,7 @@ export default function ArticleSection() {
               month: "long",
               year: "numeric",
             })}
+            postId={post.id} // Pass postId for linking
           />
         ))}
       </div>

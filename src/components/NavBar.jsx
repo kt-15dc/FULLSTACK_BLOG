@@ -20,8 +20,9 @@ const NavBar = () => {
 
         {/* Desktop Buttons */}
         <div className="hidden sm:flex space-x-4">
-          <PrimaryButton>Get started</PrimaryButton>
-          <OutlineButton>Log in</OutlineButton>
+        <OutlineButton>Log in</OutlineButton>
+          <PrimaryButton>Sign up</PrimaryButton>
+          
         </div>
 
         {/* Mobile Menu */}
@@ -50,9 +51,9 @@ const NavBar = () => {
                 </DropdownMenuItem>
               </div>
               <DropdownMenuSeparator /> */}
-              <div className="space-y-2 pt-2">
-                <PrimaryButton className="w-full">Get started</PrimaryButton>
-                <OutlineButton className="w-full">Log in</OutlineButton>
+              <div className="space-x-4 pt-2">
+              <OutlineButton>Log in</OutlineButton>
+              <PrimaryButton>Sign up</PrimaryButton>
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
